@@ -1,6 +1,7 @@
 plugins {
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
+    id("jacoco")
 }
 
 group = "atlanteshellsing.aegis"
@@ -30,8 +31,23 @@ java {
     }
 }
 
+jacoco {
+    toolVersion = "0.8.13"
+}
+
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests must run first
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
 }
 
 application {
