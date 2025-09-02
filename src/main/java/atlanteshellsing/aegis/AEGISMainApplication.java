@@ -5,10 +5,12 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class AEGISMainApplication extends Application {
     
     protected AEGISMainGui mainGUI;
-    protected Image logo = new Image(getClass().getResource("/images/AEGIS.png").toExternalForm());
+    protected Image logo = new Image(Objects.requireNonNull(getClass().getResource("/images/AEGIS.png")).toExternalForm());
 
     @Override
     public void start(Stage primaryStage) {
