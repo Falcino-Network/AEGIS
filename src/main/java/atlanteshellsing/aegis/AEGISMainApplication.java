@@ -1,18 +1,23 @@
 package atlanteshellsing.aegis;
 
+import atlanteshellsing.aegis.gui.AEGISMainGui;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class AEGISMainApplication extends Application {
+    
+    protected AEGISMainGui mainGUI;
+    protected Image logo = new Image(getClass().getResource("/images/AEGIS.png").toExternalForm());
 
     @Override
     public void start(Stage primaryStage) {
-        Label label = new Label("Welcome to A.E.G.I.S.");
-        Scene scene = new Scene(label, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("A.E.G.I.S. Framework");
+        mainGUI = new AEGISMainGui();
+
+        primaryStage.setScene(mainGUI.createScene(1280, 800));
+        primaryStage.getIcons().clear();
+        primaryStage.getIcons().add(logo);
+
         primaryStage.show();
     }
 
