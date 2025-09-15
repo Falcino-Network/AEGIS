@@ -27,6 +27,7 @@ public class AEGISTabPane extends TabPane {
         }
 
         Tab tab = new Tab(title, content);
+        tab.setOnClosed(e -> removeTab(key));
         getTabs().add(tab);
         tabRegistry.put(key, new TabInfo(key, tab, title, content));
     }

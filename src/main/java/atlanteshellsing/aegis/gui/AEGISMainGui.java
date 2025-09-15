@@ -1,6 +1,7 @@
 package atlanteshellsing.aegis.gui;
 
 import atlanteshellsing.aegis.components.gui.AEGISTabPane;
+import atlanteshellsing.aegis.theme.AEGISThemeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -36,10 +37,15 @@ public class AEGISMainGui {
                 new MenuItem("Exit")
         );
 
+        Menu viewMenu = new Menu("View");
+        MenuItem toggleTheme = new MenuItem("Toggle Theme");
+        toggleTheme.setOnAction(action -> AEGISThemeManager.toggleTheme(pane.getScene()));
+        viewMenu.getItems().add(toggleTheme);
+
         Menu helpMenu = new Menu("Help");
         helpMenu.getItems().add(new MenuItem("About"));
 
-        menuBar.getMenus().addAll(fileMenu, helpMenu);
+        menuBar.getMenus().addAll(fileMenu, helpMenu, viewMenu);
 
         initHeader();
     }
@@ -57,7 +63,9 @@ public class AEGISMainGui {
     }
 
     public Scene createScene(double width, double height) {
-        return new Scene(pane, width, height);
+        Scene scene = new Scene(pane, width, height);
+        AEGISThemeManager.applyTheme(scene, AEGISThemeManager.LIGHT_THEME);
+        return scene;
     }
 
     public AEGISTabPane getMainTabPane() { return tabPane; }

@@ -10,4 +10,5 @@ module atlanteshellsing.aegis {
     exports atlanteshellsing.aegis;               // Expose public API
     exports  atlanteshellsing.aegis.gui;
     exports atlanteshellsing.aegis.components.gui;
+    exports atlanteshellsing.aegis.theme;
 }
