@@ -1,5 +1,6 @@
 package atlanteshellsing.aegis.gui;
 
+import atlanteshellsing.aegis.components.gui.AEGISTabPane;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -13,11 +14,18 @@ public class AEGISMainGui {
 
     private final BorderPane pane;
     private final MenuBar menuBar;
+    private final AEGISTabPane tabPane;
 
     public AEGISMainGui() {
         pane = new BorderPane();
         menuBar = new MenuBar();
+        tabPane = new AEGISTabPane();
+
         initMenuBar();
+
+        pane.setCenter(tabPane);
+
+        tabPane.addTab("home", "home", new Label("Welcome to Aegis"));
     }
 
     private void initMenuBar() {
@@ -51,4 +59,6 @@ public class AEGISMainGui {
     public Scene createScene(double width, double height) {
         return new Scene(pane, width, height);
     }
+
+    public AEGISTabPane getMainTabPane() { return tabPane; }
 }
