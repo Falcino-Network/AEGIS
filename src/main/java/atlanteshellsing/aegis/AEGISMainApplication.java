@@ -1,10 +1,12 @@
 package atlanteshellsing.aegis;
 
 import atlanteshellsing.aegis.gui.AEGISMainGui;
+import atlanteshellsing.aegis.structure.AEGISConfigurationManager;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.nio.file.Files;
 import java.util.Objects;
 
 public class AEGISMainApplication extends Application {
@@ -14,6 +16,10 @@ public class AEGISMainApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        if(!Files.exists(AEGISConfigurationManager.userAppDataDir)) {
+            AEGISConfigurationManager.initUserConfig(AEGISConfigurationManager.userAppDataDir);
+        }
+
         mainGUI = new AEGISMainGui();
 
         primaryStage.setScene(mainGUI.createScene(1280, 800));

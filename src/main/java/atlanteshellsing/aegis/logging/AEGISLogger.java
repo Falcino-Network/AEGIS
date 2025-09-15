@@ -46,6 +46,8 @@ public class AEGISLogger {
         handler.setFormatter(new SimpleFormatter() {
             @Override
             public synchronized String format(LogRecord logRec) {
+                StringBuilder builder = new StringBuilder();
+
                 String timestamp = LocalDateTime.now().format(FORMATTER);
                 AEGISLogKey key = AEGISLogKey.AEGIS_MAIN;
                 AEGISLogLevel aegisLevel = null;
@@ -62,14 +64,49 @@ public class AEGISLogger {
 
                 String color = aegisLevel != null ? aegisLevel.color.code : LogColor.RESET.code;
 
-                return String.format("%s[%s] [%s] [%s] %s%s%n",
+                builder.append(String.format("%s[%s] [%s] [%s] %s%s%n",
                         color,
                         timestamp,
                         key.name(),
                         logRec.getLevel().getName(),
                         logRec.getMessage(),
                         LogColor.RESET.code
-                );
+                ));
+
+                //print throwables
+                if(logRec.getThrown() != null) {
+                    Throwable thrown = logRec.getThrown();
+                    printThrowable(builder, thrown);
+                }
+
+                return builder.toString();
+            }
+
+            private void printThrowable(StringBuilder builder, Throwable thrown) {
+
+                  String grey = "\u001B[90m";
+                  String red = "\u001B[31m";
+
+                // Print Exception Header In Red
+                builder.append(red)
+                        .append("Caused by: ")
+                        .append(thrown.toString())
+                        .append(LogColor.RESET.code)
+                        .append(System.lineSeparator());
+
+                // Print Stack Trace In Grey
+                for(StackTraceElement element : thrown.getStackTrace()) {
+                    builder.append(grey)
+                            .append("\tat ")
+                            .append(element.toString())
+                            .append(LogColor.RESET.code)
+                            .append(System.lineSeparator());
+                }
+
+                //Handle Nested Exceptions
+                Throwable cause = thrown.getCause();
+                if(cause != null)
+                    printThrowable(builder, cause);
             }
         });
 
@@ -77,9 +114,17 @@ public class AEGISLogger {
         AEGIS_LOGGER.addHandler(handler);
         AEGIS_LOGGER.setLevel(Level.ALL);
     }
+
     public static void log(AEGISLogKey key, AEGISLogLevel level, String message) {
         LogRecord logRec = new LogRecord(level.level, message);
         logRec.setParameters(new Object[]{key, level});
+        AEGIS_LOGGER.log(logRec);
+    }
+
+    public static void log(AEGISLogKey key, AEGISLogLevel level, String message, Exception e) {
+        LogRecord logRec = new LogRecord(level.level, message);
+        logRec.setParameters(new Object[]{key, level});
+        logRec.setThrown(e);
         AEGIS_LOGGER.log(logRec);
     }
 }
