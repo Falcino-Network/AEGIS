@@ -22,7 +22,6 @@ public class AEGISConfigurationManager {
 
     public static void initUserConfig(Path configDir) {
         try {
-            System.out.print(configDir);
             if(configDir != null) {
                 Files.createDirectories(configDir.resolve("Configuration"));
                 Files.createDirectories(configDir.resolve("Logs"));
