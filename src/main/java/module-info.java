@@ -3,6 +3,7 @@ module atlanteshellsing.aegis {
     requires javafx.fxml;
     requires java.logging;
 	requires java.compiler;
+    requires java.xml;
 
     opens atlanteshellsing.aegis to javafx.fxml;  // Allows FXML reflection
     exports atlanteshellsing.aegis;               // Expose public API
