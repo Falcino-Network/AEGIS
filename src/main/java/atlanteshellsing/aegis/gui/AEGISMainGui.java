@@ -64,7 +64,7 @@ public class AEGISMainGui {
 
     public Scene createScene(double width, double height) {
         Scene scene = new Scene(pane, width, height);
-        AEGISThemeManager.applyTheme(scene, AEGISThemeManager.LIGHT_THEME);
+        AEGISThemeManager.loadTheme(scene);
         return scene;
     }
 

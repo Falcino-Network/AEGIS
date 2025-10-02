@@ -16,8 +16,9 @@ public class AEGISMainApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         if(!Files.exists(AEGISConfigurationManager.userAppDataDir)) {
-            AEGISConfigurationManager.initUserConfig(AEGISConfigurationManager.userAppDataDir);
+            AEGISConfigurationManager.initUserConfig();
         }
 
         mainGUI = new AEGISMainGui();

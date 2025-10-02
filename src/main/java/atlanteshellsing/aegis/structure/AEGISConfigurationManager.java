@@ -1,5 +1,7 @@
 package atlanteshellsing.aegis.structure;
 
+import atlanteshellsing.aegis.custom.factories.AEGISSecureDocumentBuilderFactory;
+import atlanteshellsing.aegis.custom.factories.AEGISSecureTransformerFactory;
 import atlanteshellsing.aegis.logging.AEGISLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,6 +24,8 @@ import java.nio.file.Paths;
 public class AEGISConfigurationManager {
 
     public static final Path userAppDataDir = getUserAppDataPath();
+    public static final Path configurationDir = userAppDataDir.resolve("Configuration");
+    public static final Path userConfigFile = configurationDir.resolve("configuration.aegis");
 
     private AEGISConfigurationManager() {}
 
@@ -34,24 +38,21 @@ public class AEGISConfigurationManager {
         }
     }
 
-    public static void initUserConfig(Path configDir) {
+    public static void initUserConfig() {
         try {
-            if(configDir != null) {
-                Files.createDirectories(configDir.resolve("Configuration"));
-                Files.createDirectories(configDir.resolve("Logs"));
+                Files.createDirectories(configurationDir);
+                Files.createDirectories(userAppDataDir.resolve("Logs"));
 
-                createConfigFile(configDir.resolve("Configuration"));
-            }
+                createConfigFile();
+
         } catch (IOException e) {
             AEGISLogger.log(AEGISLogger.AEGISLogKey.AEGIS_MAIN, AEGISLogger.AEGISLogLevel.SEVERE, "Configuration Files Could Not Be Created", e);
         }
     }
 
-    private static void createConfigFile(Path configDir) {
+    private static void createConfigFile() {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            factory.setExpandEntityReferences(false);
+            DocumentBuilderFactory factory = new AEGISSecureDocumentBuilderFactory().getSecureFactory();
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             Document doc = builder.newDocument();
@@ -67,13 +68,13 @@ public class AEGISConfigurationManager {
 
             root.appendChild(pref);
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            TransformerFactory transformerFactory = new AEGISSecureTransformerFactory().getSecureFactory();
             transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(configDir.resolve("configuration.aegis").toFile());
+            StreamResult result = new StreamResult(AEGISConfigurationManager.userConfigFile.toFile());
 
             transformer.transform(source, result);
 
