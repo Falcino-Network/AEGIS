@@ -1,4 +1,4 @@
-package atlanteshellsing.aegis.assetations;
+package atlanteshellsing.aegis.annotations;
 
 import java.lang.annotation.*;
 
