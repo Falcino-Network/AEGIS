@@ -52,6 +52,11 @@ public class AEGISConfigurationManager {
 
     private static void createConfigFile() {
         try {
+
+            if(Files.exists(userConfigFile)) {
+                return;
+            }
+
             DocumentBuilderFactory factory = new AEGISSecureDocumentBuilderFactory().getSecureFactory();
             DocumentBuilder builder = factory.newDocumentBuilder();
 

@@ -60,18 +60,19 @@ public class AEGISThemeManager {
 
             Element root = doc.getDocumentElement();
             Element preferences = (Element) root.getElementsByTagName("preferences").item(0);
-            Element themeElement = (Element) preferences.getElementsByTagName("theme").item(0);
+            Element themeElement = preferences != null ? (Element) preferences.getElementsByTagName("theme").item(0) : null;
 
-            if(themeElement.getTextContent().equals("LightTheme")) {
+            if (themeElement == null) {
                 currentTheme = LIGHT_THEME;
             } else {
-                currentTheme = DARK_THEME;
+                String storedTheme = themeElement.getTextContent();
+                currentTheme = "LightTheme".equals(storedTheme) ? LIGHT_THEME : DARK_THEME;
             }
 
             applyTheme(scene, currentTheme);
 
 
-        } catch(ParserConfigurationException | SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             AEGISLogger.log(AEGISLogger.AEGISLogKey.AEGIS_MAIN, AEGISLogger.AEGISLogLevel.SEVERE, "Something Went Wrong When Loading Theme", e);
         }
     }
@@ -91,7 +92,15 @@ public class AEGISThemeManager {
 
             Element root = doc.getDocumentElement();
             Element preferences = (Element) root.getElementsByTagName("preferences").item(0);
+            if (preferences == null) {
+                preferences = doc.createElement("preferences");
+                root.appendChild(preferences);
+            }
             Element themeElement = (Element) preferences.getElementsByTagName("theme").item(0);
+            if (themeElement == null) {
+                themeElement = doc.createElement("theme");
+                preferences.appendChild(themeElement);
+            }
 
             String theme = getCurrentTheme().equals(LIGHT_THEME) ? "LightTheme" : "DarkTheme";
             themeElement.setTextContent(theme);
@@ -105,7 +114,7 @@ public class AEGISThemeManager {
             StreamResult result = new StreamResult(configFile);
             transformer.transform(source, result);
 
-        } catch(ParserConfigurationException | SAXException | IOException | TransformerException e) {
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
             AEGISLogger.log(AEGISLogger.AEGISLogKey.AEGIS_MAIN, AEGISLogger.AEGISLogLevel.SEVERE, "Something Went Wrong When Saving Theme", e);
         }
     }

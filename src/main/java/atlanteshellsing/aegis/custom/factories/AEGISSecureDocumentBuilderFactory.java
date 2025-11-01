@@ -15,16 +15,15 @@ public class AEGISSecureDocumentBuilderFactory {
         try {
             secureFactory = DocumentBuilderFactory.newInstance();
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            secureFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            secureFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            secureFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            secureFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            secureFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
-            factory.setXIncludeAware(false);
-            factory.setExpandEntityReferences(false);
-            factory.setNamespaceAware(true);
+            secureFactory.setXIncludeAware(false);
+            secureFactory.setExpandEntityReferences(false);
+            secureFactory.setNamespaceAware(true);
 
         } catch (ParserConfigurationException e) {
             AEGISLogger.log(AEGISLogger.AEGISLogKey.AEGIS_MAIN, AEGISLogger.AEGISLogLevel.SEVERE, "Failed to configure secure XML parser", e);
