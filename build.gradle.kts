@@ -51,37 +51,30 @@ tasks.jacocoTestReport {
         html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
     }
 
-    doLast {
-        // Handle both Java and Kotlin outputs
-        val classFiles = fileTree(layout.buildDirectory.dir("classes")) {
-            include("**/*.class")
-        }
-
-        // Bytecode annotation descriptor (binary name)
-        val excludeAnnotation = "Latlanteshellsing/aegis/assetations/ExcludeAsGenerated;"
-
-        // Efficiently skip annotated class files
-        val filteredClasses = classFiles.matching {
-            exclude { it ->
-                val file = it.file
-                if (!file.isFile || !file.name.endsWith(".class")) return@exclude false
-
-                // Read just enough bytes to detect the annotation
-                BufferedInputStream(file.inputStream()).use { input ->
-                    val buffer = ByteArray(4096) // 4 KB buffer
-                    var bytesRead: Int
-                    while (input.read(buffer).also { bytesRead = it } != -1) {
-                        val text = String(buffer, 0, bytesRead, Charsets.ISO_8859_1)
-                        if (text.contains(excludeAnnotation)) return@exclude true
-                    }
-                }
-
-                false
-            }
-        }
-
-        classDirectories.setFrom(files(filteredClasses))
+    // Handle both Java and Kotlin outputs
+    val classFiles = fileTree(layout.buildDirectory.dir("classes")) {
+        include("**/*.class")
     }
+    // Bytecode annotation descriptor (binary name)
+    val excludeAnnotation = "Latlanteshellsing/aegis/assetations/ExcludeAsGenerated;"
+    // Efficiently skip annotated class files
+    val filteredClasses = classFiles.matching {
+        exclude { it ->
+            val file = it.file
+            if (!file.isFile || !file.name.endsWith(".class")) return@exclude false
+            // Read just enough bytes to detect the annotation
+            BufferedInputStream(file.inputStream()).use { input ->
+                val buffer = ByteArray(4096) // 4 KB buffer
+                var bytesRead: Int
+                while (input.read(buffer).also { bytesRead = it } != -1) {
+                    val text = String(buffer, 0, bytesRead, Charsets.ISO_8859_1)
+                    if (text.contains(excludeAnnotation)) return@exclude true
+                }
+            }
+            false
+        }
+    }
+    classDirectories.setFrom(files(filteredClasses))
 }
 
 application {
