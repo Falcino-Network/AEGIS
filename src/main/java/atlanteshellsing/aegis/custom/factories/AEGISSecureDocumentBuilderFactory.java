@@ -10,6 +10,11 @@ public class AEGISSecureDocumentBuilderFactory {
 
     private DocumentBuilderFactory secureFactory;
 
+    /**
+     * Creates a DocumentBuilderFactory preconfigured for secure XML parsing.
+     *
+     * Configures the factory to enable secure processing, disallow DOCTYPE declarations, disable external general and parameter entities, prevent loading external DTDs, disable XInclude processing, disable expansion of entity references, and enable namespace awareness. Any ParserConfigurationException raised while applying these settings is logged. 
+     */
     public AEGISSecureDocumentBuilderFactory() {
 
         try {
@@ -30,5 +35,10 @@ public class AEGISSecureDocumentBuilderFactory {
         }
     }
 
-    public DocumentBuilderFactory getSecureFactory() { return secureFactory; }
+    /**
+ * Provides the configured DocumentBuilderFactory for secure XML parsing.
+ *
+ * @return the DocumentBuilderFactory configured with secure parsing features
+ */
+public DocumentBuilderFactory getSecureFactory() { return secureFactory; }
 }
