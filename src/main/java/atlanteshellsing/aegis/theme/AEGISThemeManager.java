@@ -27,10 +27,25 @@ public class AEGISThemeManager {
 
     private static String currentTheme = LIGHT_THEME;
 
+    /**
+     * Prevents instantiation of this utility class.
+     *
+     * @throws IllegalStateException always thrown to indicate the class should not be instantiated
+     */
     private AEGISThemeManager() {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Apply the specified theme stylesheet to the given Scene and persist the selection.
+     *
+     * Clears any existing stylesheets on the scene, sets the manager's current theme to the provided
+     * theme path (typically AEGISThemeManager.LIGHT_THEME or AEGISThemeManager.DARK_THEME), and adds
+     * the corresponding stylesheet resource to the scene.
+     *
+     * @param scene the JavaFX Scene to update
+     * @param theme the classpath resource path to the theme CSS (e.g. AEGISThemeManager.LIGHT_THEME)
+     */
     public static void applyTheme(Scene scene, String theme) {
         scene.getStylesheets().clear();
         currentTheme = theme;
@@ -38,6 +53,11 @@ public class AEGISThemeManager {
         scene.getStylesheets().add(Objects.requireNonNull(AEGISThemeManager.class.getResource(theme)).toExternalForm());
     }
 
+    /**
+     * Toggle the application's theme between light and dark, apply the new theme to the provided scene, and persist the change.
+     *
+     * @param scene the JavaFX Scene to which the new theme will be applied
+     */
     public static void toggleTheme(Scene scene) {
         if (currentTheme.equals(LIGHT_THEME)) {
             applyTheme(scene, DARK_THEME);
@@ -46,6 +66,14 @@ public class AEGISThemeManager {
         }
     }
 
+    /**
+     * Loads the user's theme preference from the application config and applies that theme to the provided scene.
+     *
+     * If no theme preference exists in the config, the light theme is used. Errors encountered while reading
+     * the config are logged and do not propagate.
+     *
+     * @param scene the JavaFX Scene to which the loaded theme will be applied
+     */
     public static void loadTheme(Scene scene) {
 
         try {
@@ -77,6 +105,15 @@ public class AEGISThemeManager {
         }
     }
 
+    /**
+     * Persists the currently selected theme into the user's configuration XML file.
+     *
+     * Ensures a <preferences> element and a nested <theme> element exist in the config,
+     * sets the <theme> text to either "LightTheme" or "DarkTheme" based on the current theme,
+     * and writes the updated document back to the config file using secure XML transformers.
+     *
+     * Any parse, I/O, or transform failures are caught and logged as severe via AEGISLogger.
+     */
     private static void saveTheme() {
 
         try {
@@ -119,6 +156,11 @@ public class AEGISThemeManager {
         }
     }
 
+    /**
+     * Retrieve the stylesheet path for the currently active theme.
+     *
+     * @return the current theme stylesheet path; one of {@link #LIGHT_THEME} or {@link #DARK_THEME}
+     */
     public static String getCurrentTheme() {
         return currentTheme;
     }

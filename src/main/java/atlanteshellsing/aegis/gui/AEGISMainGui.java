@@ -62,6 +62,13 @@ public class AEGISMainGui {
         pane.setTop(headerBox);
     }
 
+    /**
+     * Create a JavaFX Scene rooted at the main application pane and apply the current theme.
+     *
+     * @param width  the scene width in pixels
+     * @param height the scene height in pixels
+     * @return the created Scene containing the main application layout
+     */
     public Scene createScene(double width, double height) {
         Scene scene = new Scene(pane, width, height);
         AEGISThemeManager.loadTheme(scene);

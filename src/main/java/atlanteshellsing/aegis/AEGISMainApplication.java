@@ -14,6 +14,12 @@ public class AEGISMainApplication extends Application {
     protected AEGISMainGui mainGUI;
     protected Image logo = new Image(Objects.requireNonNull(getClass().getResource("/images/AEGIS.png")).toExternalForm());
 
+    /**
+     * Initializes the application UI: ensures the user configuration directory exists, creates the main GUI,
+     * sets the scene and application icon on the provided primary stage, and displays the stage.
+     *
+     * @param primaryStage the primary JavaFX Stage to initialize and show
+     */
     @Override
     public void start(Stage primaryStage) {
 

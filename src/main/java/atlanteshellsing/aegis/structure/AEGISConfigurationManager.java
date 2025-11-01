@@ -27,8 +27,16 @@ public class AEGISConfigurationManager {
     public static final Path configurationDir = userAppDataDir.resolve("Configuration");
     public static final Path userConfigFile = configurationDir.resolve("configuration.aegis");
 
-    private AEGISConfigurationManager() {}
+    /**
+ * Prevents instantiation of AEGISConfigurationManager.
+ */
+private AEGISConfigurationManager() {}
 
+    /**
+     * Determines the base user-specific application data directory for Aegis based on the operating system.
+     *
+     * @return the Path to the Aegis application data directory; on Windows this is {@code %APPDATA%/Aegis}, on other systems this is {@code $HOME/.config/Aegis}
+     */
     private static Path getUserAppDataPath() {
         String os = System.getProperty("os.name").toLowerCase();
         if(os.contains("win")) {
@@ -38,6 +46,12 @@ public class AEGISConfigurationManager {
         }
     }
 
+    /**
+     * Initializes the user's configuration storage by ensuring the configuration directory
+     * and a "Logs" subdirectory exist, and by creating the default configuration file if missing.
+     *
+     * <p>On I/O failure, a severe error is logged and initialization stops.</p>
+     */
     public static void initUserConfig() {
         try {
                 Files.createDirectories(configurationDir);
@@ -50,6 +64,13 @@ public class AEGISConfigurationManager {
         }
     }
 
+    /**
+     * Creates the default user configuration file at the configured path if it does not already exist.
+     *
+     * The created file is an XML configuration with a root element `aegisConfig` (attribute `schemaVersion="1"`)
+     * and a `preferences` child containing a `theme` element set to `LightTheme`.
+     * If the configuration file already exists, the method returns without modifying it.
+     */
     private static void createConfigFile() {
         try {
 
