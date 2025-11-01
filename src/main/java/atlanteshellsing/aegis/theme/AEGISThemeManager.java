@@ -102,6 +102,10 @@ public class AEGISThemeManager {
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             AEGISLogger.log(AEGISLogger.AEGISLogKey.AEGIS_MAIN, AEGISLogger.AEGISLogLevel.SEVERE, "Something Went Wrong When Loading Theme", e);
+            currentTheme = LIGHT_THEME;
+            scene.getStylesheets().setAll(
+                    Objects.requireNonNull(AEGISThemeManager.class.getResource(LIGHT_THEME)).toExternalForm()
+            );
         }
     }
 
