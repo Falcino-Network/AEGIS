@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <!-- Root element -->
+    <xsd:element name="aegisConfig">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="preferences">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="theme" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+
+            <xsd:attribute name="schemaVersion" type="xsd:int" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
