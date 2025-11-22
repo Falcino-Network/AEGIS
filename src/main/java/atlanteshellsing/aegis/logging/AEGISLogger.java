@@ -143,9 +143,7 @@ public class AEGISLogger {
      * @param message the message text to record
      */
     public static void log(AEGISLogKey key, AEGISLogLevel level, String message) {
-        LogRecord logRec = new LogRecord(level.level, message);
-        logRec.setParameters(new Object[]{key, level});
-        AEGIS_LOGGER.log(logRec);
+        log(key, level, message, null);
     }
 
     /**
